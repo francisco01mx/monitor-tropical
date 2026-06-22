@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Monitor interactivo de disturbios tropicales del Atlántico y Pacífico con datos oficiales del NHC."
+    />
+    <title>Monitor Tropical · Atlántico y Pacífico</title>
+    <meta name="theme-color" content="#061719" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Monitor Tropical" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Inicio">
+          <span class="brand-mark" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </span>
+          <span>
+            <strong>Monitor Tropical</strong>
+            <small>Atlántico · Pacífico</small>
+          </span>
+        </a>
+
+        <nav class="basin-tabs" aria-label="Seleccionar cuenca">
+          <button class="tab active" data-basin="all">Vista general</button>
+          <button class="tab" data-basin="atlantic">Atlántico</button>
+          <button class="tab" data-basin="pacific">Pacífico</button>
+        </nav>
+
+        <div class="topbar-actions">
+          <div class="status-chip" id="updateStatus">
+            <span class="status-dot"></span>
+            <span>Conectando con NHC</span>
+          </div>
+
+          <button class="install-button" id="installButton" hidden>
+            <span aria-hidden="true">↓</span>
+            Instalar app
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="map-stage" aria-label="Mapa de disturbios tropicales">
+          <div id="map"></div>
+
+          <div class="map-heading">
+            <p class="eyebrow">Panorama actual</p>
+            <h1>Actividad tropical</h1>
+            <p id="mapSubtitle">Atlántico Norte y Pacífico Oriental</p>
+          </div>
+
+          <aside class="layer-panel glass">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Visualización</p>
+                <h2>Capas del mapa</h2>
+              </div>
+              <button class="icon-button" id="collapseLayers" aria-label="Contraer capas">
+                −
+              </button>
+            </div>
+            <div class="layer-list" id="layerList">
+              <label class="layer-item">
+                <span class="layer-symbol area-symbol"></span>
+                <span><strong>Áreas de formación</strong><small>Potencial a 7 días</small></span>
+                <input type="checkbox" data-layer="areas" checked />
+                <i></i>
+              </label>
+              <label class="layer-item">
+                <span class="layer-symbol route-symbol"></span>
+                <span><strong>Trayectoria probable</strong><small>Tendencia de movimiento</small></span>
+                <input type="checkbox" data-layer="lines" checked />
+                <i></i>
+              </label>
+              <label class="layer-item">
+                <span class="layer-symbol point-symbol">×</span>
+                <span><strong>Centros</strong><small>Posición de referencia</small></span>
+                <input type="checkbox" data-layer="points" checked />
+                <i></i>
+              </label>
+              <label class="layer-item">
+                <span class="layer-symbol label-symbol">Aa</span>
+                <span><strong>Etiquetas</strong><small>Probabilidad y riesgo</small></span>
+                <input type="checkbox" data-layer="labels" checked />
+                <i></i>
+              </label>
+              <label class="layer-item">
+                <span class="layer-symbol grid-symbol">⌗</span>
+                <span><strong>Retícula</strong><small>Latitud y longitud</small></span>
+                <input type="checkbox" data-layer="grid" />
+                <i></i>
+              </label>
+            </div>
+            <div class="basemap-switch">
+              <button class="active" data-basemap="dark">Oscuro</button>
+              <button data-basemap="satellite">Satélite</button>
+            </div>
+          </aside>
+
+          <div class="legend glass" aria-label="Leyenda de riesgo">
+            <span><i class="low"></i>Bajo</span>
+            <span><i class="medium"></i>Medio</span>
+            <span><i class="high"></i>Alto</span>
+            <small>Probabilidad de formación en 7 días</small>
+          </div>
+
+          <a
+            class="author-signature glass"
+            href="https://x.com/francisco01"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="En X como arroba francisco01"
+          >
+            <span class="x-mark">X</span>
+            <span>En X como <strong>@francisco01</strong></span>
+          </a>
+
+          <button class="refresh-button glass" id="refreshButton">
+            <span aria-hidden="true">↻</span> Actualizar datos
+          </button>
+
+          <section class="activity-panel glass" aria-live="polite">
+            <div class="activity-header">
+              <div>
+                <p class="eyebrow">Boletín NHC</p>
+                <h2>Disturbios activos</h2>
+              </div>
+              <span class="count-badge" id="disturbanceCount">—</span>
+            </div>
+            <div id="activityList" class="activity-list">
+              <div class="skeleton"></div>
+              <div class="skeleton short"></div>
+            </div>
+            <a
+              class="official-link"
+              href="https://www.nhc.noaa.gov/gtwo.php"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Ver perspectiva oficial del NHC <span>↗</span>
+            </a>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div class="install-toast glass" id="installToast" hidden role="status">
+      <img src="/icons/icon-192.png" alt="" />
+      <div>
+        <strong>Monitor Tropical instalado</strong>
+        <span>Ya puedes abrirlo desde tu pantalla de inicio.</span>
+      </div>
+      <button type="button" aria-label="Cerrar mensaje">×</button>
+    </div>
+
+    <div class="offline-notice" id="offlineNotice" hidden>
+      Sin conexión · mostrando la última información disponible
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="/app.js"></script>
+  </body>
+</html>

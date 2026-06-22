@@ -1,0 +1,43 @@
+{
+  "id": "/",
+  "name": "Monitor Tropical",
+  "short_name": "Monitor Tropical",
+  "description": "Monitor interactivo de disturbios tropicales del Atlántico y Pacífico con datos del NHC.",
+  "lang": "es-MX",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#061719",
+  "theme_color": "#061719",
+  "categories": ["weather", "news", "utilities"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ver Atlántico",
+      "short_name": "Atlántico",
+      "url": "/?basin=atlantic",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Ver Pacífico",
+      "short_name": "Pacífico",
+      "url": "/?basin=pacific",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
