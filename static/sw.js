@@ -1,4 +1,4 @@
-const CACHE_VERSION = "monitor-tropical-v1";
+const CACHE_VERSION = "monitor-tropical-v5";
 const APP_SHELL = [
   "/",
   "/index.html",
@@ -39,7 +39,10 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
 
-  if (url.pathname === "/api/disturbances") {
+  if (
+    url.pathname === "/api/disturbances" ||
+    url.pathname === "/api/cyclones"
+  ) {
     event.respondWith(networkFirst(request));
     return;
   }
@@ -47,6 +50,19 @@ self.addEventListener("fetch", (event) => {
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request).catch(() => caches.match("/index.html"))
+    );
+    return;
+  }
+
+  if (url.origin === self.location.origin) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const copy = response.clone();
+          caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
+          return response;
+        })
+        .catch(() => caches.match(request))
     );
     return;
   }
@@ -62,6 +78,22 @@ self.addEventListener("fetch", (event) => {
         caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
         return response;
       });
+    })
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const targetUrl = event.notification.data?.url || "/";
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
+      for (const client of clients) {
+        if ("focus" in client) {
+          client.navigate(targetUrl);
+          return client.focus();
+        }
+      }
+      return self.clients.openWindow(targetUrl);
     })
   );
 });

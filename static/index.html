@@ -32,7 +32,7 @@
           </span>
           <span>
             <strong>Monitor Tropical</strong>
-            <small>Atlántico · Pacífico</small>
+            <small>por @francisco01</small>
           </span>
         </a>
 
@@ -76,6 +76,30 @@
               </button>
             </div>
             <div class="layer-list" id="layerList">
+              <label class="layer-item cyclone-layer-item">
+                <span class="layer-symbol cyclone-symbol"></span>
+                <span><strong>Ciclones activos</strong><small>Posición y categoría</small></span>
+                <input type="checkbox" data-layer="cyclones" checked />
+                <i></i>
+              </label>
+              <label class="layer-item">
+                <span class="layer-symbol cone-symbol"></span>
+                <span><strong>Cono oficial</strong><small>Incertidumbre de trayectoria</small></span>
+                <input type="checkbox" data-layer="cones" checked />
+                <i></i>
+              </label>
+              <label class="layer-item">
+                <span class="layer-symbol route-symbol"></span>
+                <span><strong>Pronóstico ciclónico</strong><small>Ruta y posiciones futuras</small></span>
+                <input type="checkbox" data-layer="cycloneTrack" checked />
+                <i></i>
+              </label>
+              <label class="layer-item">
+                <span class="layer-symbol warning-symbol">!</span>
+                <span><strong>Avisos costeros</strong><small>Vigilancias y advertencias</small></span>
+                <input type="checkbox" data-layer="warnings" checked />
+                <i></i>
+              </label>
               <label class="layer-item">
                 <span class="layer-symbol area-symbol"></span>
                 <span><strong>Áreas de formación</strong><small>Potencial a 7 días</small></span>
@@ -107,10 +131,65 @@
                 <i></i>
               </label>
             </div>
-            <div class="basemap-switch">
-              <button class="active" data-basemap="dark">Oscuro</button>
-              <button data-basemap="satellite">Satélite</button>
+          </aside>
+
+          <div class="map-tools">
+            <button class="map-tool-button glass" id="basemapButton" aria-expanded="false">
+              <span aria-hidden="true">◫</span> Mapas base
+            </button>
+            <button class="map-tool-button glass" id="alertsButton">
+              <span aria-hidden="true">♢</span> Activar alertas
+            </button>
+          </div>
+
+          <aside class="basemap-panel glass" id="basemapPanel" hidden>
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Cartografía</p>
+                <h2>Mapa base</h2>
+              </div>
+              <button class="icon-button" id="closeBasemaps" aria-label="Cerrar mapas base">×</button>
             </div>
+            <div class="basemap-grid">
+              <button class="basemap-option active" data-basemap="dark">
+                <span class="basemap-preview preview-dark"></span>
+                <strong>Oscuro</strong>
+              </button>
+              <button class="basemap-option" data-basemap="light">
+                <span class="basemap-preview preview-light"></span>
+                <strong>Claro</strong>
+              </button>
+              <button class="basemap-option" data-basemap="osm">
+                <span class="basemap-preview preview-osm"></span>
+                <strong>OpenStreetMap</strong>
+              </button>
+              <button class="basemap-option" data-basemap="satellite">
+                <span class="basemap-preview preview-satellite"></span>
+                <strong>Esri Satélite</strong>
+              </button>
+              <button class="basemap-option" data-basemap="topographic">
+                <span class="basemap-preview preview-topo"></span>
+                <strong>Esri Topográfico</strong>
+              </button>
+              <button class="basemap-option unavailable" disabled>
+                <span class="basemap-preview preview-antique"></span>
+                <strong>Modern Antique</strong>
+                <small>Requiere clave ArcGIS</small>
+              </button>
+              <button class="basemap-option unavailable" disabled>
+                <span class="basemap-preview preview-google"></span>
+                <strong>Google Maps</strong>
+                <small>Requiere Google Tiles API</small>
+              </button>
+              <button class="basemap-option unavailable" disabled>
+                <span class="basemap-preview preview-bing"></span>
+                <strong>Azure/Bing</strong>
+                <small>Requiere cuenta Azure Maps</small>
+              </button>
+            </div>
+            <p class="provider-note">
+              Las opciones bloqueadas necesitan una clave oficial del proveedor.
+            </p>
           </aside>
 
           <div class="legend glass" aria-label="Leyenda de riesgo">
@@ -128,7 +207,7 @@
             aria-label="En X como arroba francisco01"
           >
             <span class="x-mark">X</span>
-            <span>En X como <strong>@francisco01</strong></span>
+            <span>CREADO POR <strong>@francisco01</strong></span>
           </a>
 
           <button class="refresh-button glass" id="refreshButton">
@@ -171,6 +250,15 @@
 
     <div class="offline-notice" id="offlineNotice" hidden>
       Sin conexión · mostrando la última información disponible
+    </div>
+
+    <div class="alert-toast glass" id="alertToast" hidden role="status">
+      <span class="alert-toast-icon">!</span>
+      <div>
+        <strong id="alertToastTitle">Alerta tropical</strong>
+        <span id="alertToastText"></span>
+      </div>
+      <button type="button" aria-label="Cerrar alerta">×</button>
     </div>
 
     <script
