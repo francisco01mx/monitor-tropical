@@ -1,0 +1,4 @@
+# Cachés de Python
+__pycache__/
+*.py[cod]
+*.pyo
