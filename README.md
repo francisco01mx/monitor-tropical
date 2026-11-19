@@ -1,5 +1,7 @@
 # Monitor Tropical
 
+> **Nota:** este visor cubre solo la vigilancia de disturbios y ciclones tropicales. El visor completo (trópicos, sinóptico, modelos, satélite y radar) está en [weather-francisco](https://github.com/francisco01mx/weather-francisco).
+
 Aplicación web local para visualizar los disturbios tropicales actuales del
 Atlántico y del Pacífico con los shapefiles oficiales del National Hurricane
 Center (NHC).
